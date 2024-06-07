@@ -13,10 +13,11 @@ def main():
     return render_template('main.html', **context)
 
 
-@app.route('/hello/<name>')
-def hello(name):
+@app.route('/hello/<name>&<mail>')
+def hello(name, mail):
     context = {
-        'name': name
+        'name': name,
+        'mail': mail
     }
     return render_template('hello_page.html', **context)
 
@@ -34,7 +35,7 @@ def authorize():
             redirect(url_for('authorize'))
         name = request.form.get('auth_name')
         mail = request.form.get('auth_email')
-        response = make_response(redirect(url_for('hello', name=name)))
+        response = make_response(redirect(url_for('hello', name=name, mail=mail)))
         response.set_cookie('username', context['name'])
         response.set_cookie('mail', context['mail'])
         flash('Форма успешно отправлена!', 'success')
