@@ -30,7 +30,7 @@ def authorize():
     }
     if request.method == 'POST':
         if not request.form['auth_name'] or not request.form['auth_email']:
-            flash('Введите имя', 'danger')
+            flash('Введите все данные', 'danger')
             redirect(url_for('authorize'))
         name = request.form.get('auth_name')
         mail = request.form.get('auth_email')
