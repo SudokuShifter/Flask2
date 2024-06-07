@@ -10,10 +10,15 @@ def main():
     context = {
         'title': ''
     }
-    response = make_response(render_template('main.html', **context))
-    response.set_cookie('username', 'Eliot')
-    response.set_cookie('mail', 'MrRobot@yahoo.com')
-    return response
+    return render_template('main.html', **context)
+
+
+@app.route('/hello/<name>')
+def hello(name):
+    context = {
+        'name': name
+    }
+    return render_template('hello_page.html', **context)
 
 
 @app.route('/authorize/', methods=['GET', 'POST'])
@@ -24,11 +29,14 @@ def authorize():
         'mail': 'Введите электронную почту',
     }
     if request.method == 'POST':
+        if not request.form['auth_name'] or not request.form['auth_email']:
+            flash('Введите имя', 'danger')
+            redirect(url_for('authorize'))
         name = request.form.get('auth_name')
         mail = request.form.get('auth_email')
-        response = make_response(redirect(url_for('authorize')))
-        response.set_cookie('username', str(name))
-        response.set_cookie('mail', str(mail))
+        response = make_response(redirect(url_for('hello', name=name)))
+        response.set_cookie('username', context['name'])
+        response.set_cookie('mail', context['mail'])
         flash('Форма успешно отправлена!', 'success')
         return response
     return render_template('authorize.html', **context)
