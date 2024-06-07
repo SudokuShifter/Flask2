@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}
+{{ title }}
+{% endblock %}
+<h1>Страница авторизации</h1>
+<br><br>
+
+{% block content %}
+<form class="form_auth_style" action="#" method="post">
+    {% with messages = get_flashed_messages(with_categories=true)
+%}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+    <label>{{ name }}</label>
+    <input type="text" name="auth_name" placeholder="Введите Ваше имя" required>
+    <label>{{ mail }}</label>
+    <input type="email" name="auth_email" placeholder="Введите Вашу почту" required>
+    <button class="form_auth_button" type="submit" name="form_auth_submit">Отправить</button>
+</form>
+{% endblock %}
